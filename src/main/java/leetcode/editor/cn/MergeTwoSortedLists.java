@@ -60,7 +60,7 @@ class Solution {
         return res;
     }
 
-    // 迭代 - 判断 l1 和 l2 哪一个链表的头节点的值更小，将较小值的节点添加到结果里，
+    // 迭代 - 首先判断 l1 和 l2 哪一个链表的头节点的值更小，将较小值的节点添加到结果里，
     // 当一个节点被添加到结果里之后，将对应链表中的节点向后移一位。
     public ListNode iterationMethod(ListNode l1, ListNode l2) {
         ListNode res = new ListNode(-1);
