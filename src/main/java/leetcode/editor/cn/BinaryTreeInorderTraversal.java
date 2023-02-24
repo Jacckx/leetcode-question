@@ -63,80 +63,40 @@ public class BinaryTreeInorderTraversal {
  * }
  */
 class Solution {
-    List<Integer> res = new LinkedList<Integer>();
+    List<Integer> res = new LinkedList<>();
 
     public List<Integer> inorderTraversal(TreeNode root) {
-        //recursionTraverse(root);
-        iterationTraverse1(root);
-        // iterationTraverse2(root);
+        inorder(root);
         return res;
     }
 
-    // 中序遍历 - 递归
-    public void recursionTraverse(TreeNode root) {
-        if(root == null) {
-            return;
-        }
-
-        recursionTraverse(root.left);
+    public void inorder(TreeNode root) {
+        if (root == null) return;
+        // 左->中->右
+        inorder(root.left);
         res.add(root.val);
-        recursionTraverse(root.right);
+        inorder(root.right);
     }
 
-    // 中序遍历 - 迭代
-    // 中序遍历顺序 左->中->右
-    // 入栈顺序：左->右
-    // 前序遍历中访问节点和处理节点可以同步处理，但是中序就无法做到同步，因此需要指针配合
-    public void iterationTraverse1(TreeNode root) {
-        if (root == null){
-            return;
-        }
-
+    public List<Integer> inorderTraversal1(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
-        TreeNode cur = root;
-        while(!stack.isEmpty() || cur != null) {
-            while (cur != null) { // 指针来访问节点，访问到最底层
-                stack.push(cur); // 将访问的节点放进栈
-                cur = cur.left;  // 左
-            }
-            cur = stack.pop(); // 从栈里弹出的数据，就是要处理的数据
-            res.add(cur.val); // 中
-            cur = cur.right; // 右
+        if (node == null) {
+            return res;
         }
-    }
-
-
-    // 中序遍历 - 迭代 （统一写法，适合前中后序迭代遍历）
-    public void iterationTraverse2(TreeNode root){
-        if (root == null){
-            return;
-        }
-
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
+        stack.push(node);
         while(!stack.isEmpty()) {
-            TreeNode tmp = stack.peek();
-            if (tmp != null) {
-                stack.pop(); // 将该节点弹出，避免重复操作，下面再将右中左节点添加到栈中
-
-                if (tmp.right != null) { // 添加右节点（空节点不入栈）
-                    stack.push(tmp.right);
-                }
-
-                stack.push(tmp); // 添加中节点
-                stack.push(null); // 中节点访问过，但还没有处理，加入空节点作为标记
-
-                if (tmp.left != null) { // 添加左节点（空节点不入栈）
-                    stack.push(tmp.left);
-                }
-
-            } else { // 只有遇到空节点的时候，才将下一个节点放进结果集
-                stack.pop(); // 将空节点弹出
-                tmp = stack.peek(); // 重新取出栈中元素
-                stack.pop();
-                res.add(tmp.val); // 加入到结果集
+            node = stack.pop();
+            if (node != null) {
+                if (node.right != null) stack.push(node.right);
+                stack.push(node);
+                stack.push(null);
+                if (node.left != null) stack.push(node.left);
+            }
+            else {
+                res.add(stack.pop().val);
             }
         }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

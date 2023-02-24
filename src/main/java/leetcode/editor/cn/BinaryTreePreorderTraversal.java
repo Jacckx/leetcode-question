@@ -53,6 +53,8 @@
 
 package leetcode.editor.cn;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -79,74 +81,42 @@ class Solution {
     List<Integer> res = new LinkedList<>();
 
     public List<Integer> preorderTraversal(TreeNode root) {
-        // recursionTraverse(root);
-         iterationTraverse1(root);
-        // iterationTraverse2(root);
+        preorder(root);
         return res;
     }
 
-    // 前序遍历 - 递归
-    public void recursionTraverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-
+    public void preorder(TreeNode root) {
+        if (root == null) return;
+        // 中->左->右
         res.add(root.val);
-        recursionTraverse(root.left);
-        recursionTraverse(root.right);
+        preorder(root.left);
+        preorder(root.right);
     }
 
-    // 前序遍历 - 迭代
-    // 前序遍历顺序 中->左->右
-    // 入栈顺序：中->右->左
-    // 出栈顺序：中->左->右
-    public void iterationTraverse1(TreeNode root) {
-        if (root == null){
-            return;
-        }
 
+    public List<Integer> preorderTraversal1(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode tmp = stack.pop();
-            res.add(tmp.val);
-            if (tmp.right != null) {
-                stack.push(tmp.right);
-            }
-            if (tmp.left != null){
-                stack.push(tmp.left);
-            }
+        if (node == null) {
+            return res;
         }
-    }
-
-    // 前序遍历 - 迭代 （统一写法，适合前中后序迭代遍历）
-    public void iterationTraverse2(TreeNode root) {
-        if (root == null){
-            return;
-        }
-
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode tmp = stack.peek();
-            if (tmp != null) {
-                stack.pop();
-                if (tmp.right != null){
-                    stack.push(tmp.right);
-                }
-                if (tmp.left != null){
-                    stack.push(tmp.left);
-                }
-                stack.push(tmp);
-                stack.push(null);
-
-            } else {
-                stack.pop();
-                tmp = stack.peek();
-                stack.pop();
-                res.add(tmp.val);
+        // 先往栈里压入元素，让循环开始
+        stack.push(node);
+        while (!stack.empty()) {
+            // 弹出栈顶元素，判断是否为空
+            node = stack.pop();
+            if (node != null) {
+                if (node.right != null) stack.push(node.right); // 右节点入栈
+                if (node.left != null) stack.push(node.left); // 左节点入栈
+                stack.push(node); // 中节点入栈
+                stack.push(null); // 中后压入空值标记，说明该中节点已遍历过，但是还不急着处理
+            }
+            // 发现栈顶为空，说明栈里上一个节点之前已经被遍历过，
+            // 并且它的左右子节点已经被压入栈中等待处理，说明这个节点无需保留了，直接弹出加入返回集中即可
+            else {
+                res.add(stack.pop().val);
             }
         }
+        return res;
     }
 
 }
