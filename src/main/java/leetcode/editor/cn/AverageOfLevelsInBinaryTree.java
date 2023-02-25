@@ -61,38 +61,26 @@ public class AverageOfLevelsInBinaryTree {
  */
 class Solution {
 
-    List<Double> res = new ArrayList<Double>();
-
     public List<Double> averageOfLevels(TreeNode root) {
-        BFSMethod(root);
+        List<Double> res = new LinkedList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            // 统计每一层的和
+            double sum = 0;
+            for (int i = 0; i < size; i++) {
+                root = queue.remove();
+                if (root.left != null) queue.add(root.left);
+                if (root.right != null) queue.add(root.right);
+                sum += root.val;
+            }
+            res.add(sum/size);
+        }
         return res;
     }
 
-    public void BFSMethod(TreeNode root){
-        if (root == null) {
-            return;
-        }
-
-        Queue<TreeNode> que = new LinkedList<TreeNode>();
-        que.add(root);
-        while(!que.isEmpty()) {
-            int len = que.size();
-            double sum = 0.0;
-
-            for (int i = 0; i < len; i++) {
-                TreeNode tmp = que.remove();
-                sum += tmp.val;
-
-                if (tmp.left != null) {
-                    que.add(tmp.left);
-                }
-                if (tmp.right != null) {
-                    que.add(tmp.right);
-                }
-            }
-            res.add(sum/len);
-        }
-    }
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
