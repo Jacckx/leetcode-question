@@ -63,12 +63,19 @@ public class BinaryTreeLevelOrderTraversal {
      * }
      */
     class Solution {
-        public List<List<Integer>> levelOrder(TreeNode root) {
-            List<List<Integer>> res = new LinkedList<>();
-            if (root == null) return res;
+        List<List<Integer>> res = new LinkedList<>();
 
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            //BFS(root);
+            DFS(root, 0);
+            return res;
+        }
+
+        // 迭代
+        public void BFS(TreeNode node) {
+            if (node == null) return;
             Queue<TreeNode> queue = new LinkedList<>();
-            queue.add(root);
+            queue.add(node);
             while (!queue.isEmpty()) {
                 // 记录每一层的节点值
                 List<Integer> level = new LinkedList<>();
@@ -76,14 +83,29 @@ public class BinaryTreeLevelOrderTraversal {
                 int len = queue.size();
                 // 遍历当前层的每一个节点，查找是否有左右子节点，有的话就交给队列，在下一次while循环里遍历
                 for (int i = 0; i < len; i++) {
-                    TreeNode node = queue.remove();
+                    node = queue.remove();
                     level.add(node.val);
                     if (node.left != null) queue.add(node.left);
                     if (node.right != null) queue.add(node.right);
                 }
                 res.add(level);
             }
-            return res;
+        }
+
+        // 递归
+        public void DFS(TreeNode node, int deep) {
+            if (node == null) return;
+
+            // 记录当前遍历第几层
+            deep++;
+            // 判断当前层的level集合是否已经创建过
+            if (res.size() < deep) {
+                List<Integer> level = new ArrayList<>();
+                res.add(level);
+            }
+            res.get(deep - 1).add(node.val); // 中
+            DFS(node.left, deep); // 左
+            DFS(node.right, deep); // 右
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
