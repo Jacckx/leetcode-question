@@ -62,58 +62,26 @@ public class BinaryTreeRightSideView {
  */
 class Solution {
 
-    List<Integer> res = new ArrayList<Integer>();
-    
     public List<Integer> rightSideView(TreeNode root) {
-        DFSMethod(root,0);
-        //BFSMethod(root);
-        return res;
-    }
-    
-    public void BFSMethod(TreeNode node) {
-        if (node == null){
-            return;
-        }
-
-        Queue<TreeNode> que = new LinkedList<TreeNode>();
-        que.add(node);
-        
-        while(!que.isEmpty()) {
-
-            int len = que.size();
-
+        List<Integer> res = new LinkedList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int len = queue.size();
             for (int i = 0; i < len; i++) {
-                TreeNode tmp = que.remove();
-
-                if (tmp.left != null){
-                    que.add(tmp.left);
+                root = queue.remove();
+                if (root.left != null) queue.add(root.left);
+                if (root.right != null) queue.add(root.right);
+                // 只添加每一层最后一个元素
+                if (i == len - 1) {
+                    res.add(root.val);
                 }
-                if (tmp.right != null){
-                    que.add(tmp.right);
-                }
-
-                if (i == len -1){
-                    res.add(tmp.val);
-                }
-
             }
         }
+        return res;
     }
 
-    // 迭代 - 前序遍历左右相反，跟-右-左
-    public void DFSMethod(TreeNode node, int depth){
-        if(node == null) {
-            return;
-        }
-        // 如果==，说明当前层数里还没有节点添加到res中，所以加入res
-        // 如果!=, 说明当前节点是左节点，右节点已经被加入过，所以不用加入
-        if (depth == res.size()) {
-            res.add(node.val);
-        }
-        depth++;
-        DFSMethod(node.right,depth);
-        DFSMethod(node.left,depth);
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
