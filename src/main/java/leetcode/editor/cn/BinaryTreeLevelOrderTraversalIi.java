@@ -57,47 +57,23 @@ public class BinaryTreeLevelOrderTraversalIi {
  */
 class Solution {
 
-    List<List<Integer>> res = new ArrayList<List<Integer>>();
-
-    // 二叉树自底向上的层次遍历
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        // BFS - 队列
-        BFSMethod(root);
-
-        // 翻转列表
-        List<List<Integer>> reverseList = new ArrayList<List<Integer>>();
-        for (int i = res.size() - 1; i >= 0; i--) {
-            reverseList.add(res.get(i));
-        }
-
-        return reverseList;
-    }
-
-    public void BFSMethod(TreeNode node) {
-        if (node == null) {
-            return;
-        }
-
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-        q.add(node);
-
-        while(!q.isEmpty()) {
-            List<Integer> level = new ArrayList<Integer>(); // 记录当前层的所有元素
-            int len = q.size(); // 取当前level的数量
-
+        LinkedList<List<Integer>> res = new LinkedList<>();
+        if (root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            int len = queue.size();
             for (int i = 0; i < len; i++) {
-                TreeNode tmp = q.remove();
-                level.add(tmp.val);
-
-                if (tmp.left != null){
-                    q.add(tmp.left);
-                }
-                if (tmp.right != null){
-                    q.add(tmp.right);
-                }
+                root = queue.remove();
+                level.add(root.val);
+                if (root.left != null) queue.add(root.left);
+                if (root.right != null) queue.add(root.right);
             }
-            res.add(level); // 推送到输出列表
+            res.addFirst(level);
         }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
