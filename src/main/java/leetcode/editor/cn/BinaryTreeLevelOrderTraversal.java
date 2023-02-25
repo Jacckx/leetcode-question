@@ -63,63 +63,27 @@ public class BinaryTreeLevelOrderTraversal {
      * }
      */
     class Solution {
-        // 二叉树层序遍历
         public List<List<Integer>> levelOrder(TreeNode root) {
-            DFSMethod(root,0);
-            //BFSMethod(root);
-            return res;
-        }
+            List<List<Integer>> res = new LinkedList<>();
+            if (root == null) return res;
 
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-
-        // DFS - 递归方法
-        public void DFSMethod(TreeNode node, Integer deep) {
-            if (node == null) {
-                return;
-            }
-
-            deep++;
-
-            if (res.size() < deep) {
-                // 当前层级的list没创建过，创建一个空list添加到res
-                List<Integer> item = new ArrayList<Integer>();
-                res.add(item);
-            }
-            // 利用deep进行层级界定, 并存储对应层级的node
-            res.get(deep -1).add(node.val);
-
-            DFSMethod(node.left, deep);
-            DFSMethod(node.right, deep);
-        }
-
-
-        // BFS - 迭代方法 - 队列
-        public void BFSMethod(TreeNode node) {
-            if (node == null) {
-                return;
-            }
-
-            Queue<TreeNode> que = new LinkedList<TreeNode>();
-            que.add(node);
-
-            while(!que.isEmpty()){
-                List<Integer> level = new ArrayList<Integer>();
-                int len = que.size(); // 记录当前一层node数量
-
-                for (int i = 0; i < len; i++) { // 遍历当前一层
-                    TreeNode tmp = que.remove();
-                    level.add(tmp.val);
-
-                    if (tmp.left != null) {
-                        que.add(tmp.left);
-                    }
-                    if (tmp.right != null) {
-                        que.add(tmp.right);
-                    }
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                // 记录每一层的节点值
+                List<Integer> level = new LinkedList<>();
+                // 获取队列的数量，也就是当前一层有多少节点数量
+                int len = queue.size();
+                // 遍历当前层的每一个节点，查找是否有左右子节点，有的话就交给队列，在下一次while循环里遍历
+                for (int i = 0; i < len; i++) {
+                    TreeNode node = queue.remove();
+                    level.add(node.val);
+                    if (node.left != null) queue.add(node.left);
+                    if (node.right != null) queue.add(node.right);
                 }
                 res.add(level);
-
             }
+            return res;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
