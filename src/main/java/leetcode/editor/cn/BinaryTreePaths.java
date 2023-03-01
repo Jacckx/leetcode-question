@@ -55,17 +55,13 @@ class Solution {
     List<String> res = new ArrayList<>();
 
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> res = new ArrayList<>();
-        List<Integer> paths = new ArrayList<>();
         traversal(root, "");
         return res;
     }
 
     private void traversal(TreeNode node, String paths) {
-
+        // 中，拼接节点值
         StringBuilder sb = new StringBuilder(paths);
-
-        // 拼接节点值
         sb.append(node.val);
 
         // 遇到叶子节点时候，把拼接的结果加入到res中
@@ -73,17 +69,17 @@ class Solution {
             res.add(sb.toString());
         }
 
+        sb.append("->"); // 当前还是处于中节点，只有当其有左或右子节点是才添加 ->
 
-        if (root.left != null) {
-            traversal(root.left, paths, res);
-            paths.remove(paths.size()-1); // 回溯
+        // 左
+        if (node.left != null) {
+            traversal(node.left, sb.toString());
         }
 
-        if (root.right != null) {
-            traversal(root.right, paths, res);
-            paths.remove(paths.size()-1); // 回溯
+        // 右
+        if (node.right != null) {
+            traversal(node.right, sb.toString());
         }
-
     }
 
 
@@ -93,5 +89,15 @@ class Solution {
     
     public static void main(String[] args) {
         Solution solution = new BinaryTreePaths().new Solution();
+        TreeNode a = new TreeNode(1);
+        TreeNode b = new TreeNode(2);
+        TreeNode c = new TreeNode(3);
+        TreeNode d = new TreeNode(5);
+
+        a.left = b;
+        b.right = d;
+        a.right = c;
+
+        solution.binaryTreePaths(a);
     }
 }
