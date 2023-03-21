@@ -58,7 +58,6 @@ class Solution {
     HashMap<Integer, Integer> map = new HashMap<>();
     int[] inorder;
     int[] postorder;
-    int postIndex;
 
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         // 用哈希表来保存中序遍历数组中 元素和索引 的映射
@@ -67,26 +66,24 @@ class Solution {
         }
         this.inorder = inorder;
         this.postorder = postorder;
-        postIndex = postorder.length - 1;
 
         // 左闭右闭区间
-        return traversal(0, postorder.length - 1);
+        return traversal(0, inorder.length - 1, 0, postorder.length - 1);
     }
 
-    private TreeNode traversal(int left, int right) {
-        if (left > right) return null;
+    private TreeNode traversal(int is, int ie, int ps, int pe) {
+        // 左右区间中都遍历完了，返回空树
+        if (is > ie || ps > pe) return null;
 
         // 找到后序数组中最后一位元素在中序数组中的位置
-        int rootIndex = map.get(postorder[postIndex--]);
+        int ri = map.get(postorder[pe]);
         // 构造节点
-        TreeNode root = new TreeNode(inorder[rootIndex]);
+        TreeNode node = new TreeNode(inorder[ri]);
 
         // 递归处理左右子树，参考示例图
-        // 因为采用了 postIndex 每次减一的方法，所以必须先递归生成右子树再左子树
-        // 这是因为后序数组的倒数第二个节点是level2右子树的root, 不是左子树
-        root.right = traversal(rootIndex + 1, right);
-        root.left = traversal(left, rootIndex - 1);
-        return root;
+        node.left = traversal(is, ri-1, ps, ps+ri-is-1);
+        node.right = traversal(ri+1, ie, ps+ri-is, pe-1);
+        return node;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
