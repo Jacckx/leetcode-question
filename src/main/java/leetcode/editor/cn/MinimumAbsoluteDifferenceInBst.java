@@ -35,6 +35,8 @@
 
 package leetcode.editor.cn;
 
+import java.util.Stack;
+
 public class MinimumAbsoluteDifferenceInBst {
 
 //leetcode submit region begin(Prohibit modification and deletion)
@@ -57,7 +59,7 @@ class Solution {
     // 记录上一个遍历的节点
     TreeNode pre = null;
     int res = Integer.MAX_VALUE;
-    public int getMinimumDifference(TreeNode root) {
+    public int getMinimumDifference2(TreeNode root) {
         if (root == null) return 0;
         traversal(root);
         return res;
@@ -73,7 +75,33 @@ class Solution {
         }
         // 记录前一个节点
         pre = node;
+        // 右
         traversal(node.right);
+    }
+
+    // 迭代
+    public int getMinimumDifference(TreeNode root) {
+        if (root == null) return 0;
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.isEmpty()) {
+            // 将当前节点的左子树所有节点入栈
+            while(root != null) {
+                stack.push(root);
+                // 遍历左子树
+                root = root.left;
+            }
+            // 取出栈顶元素
+            root = stack.pop();
+            // 如果当前节点有前驱节点，计算当前节点与前驱节点的差值，并更新res变
+            if (pre != null) {
+                res = Math.min(res, root.val - pre.val);
+            }
+            // 将pre指向当前节点，用于下一次比较
+            pre = root;
+            // 遍历右子树
+            root = root.right;
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
