@@ -56,6 +56,7 @@ class Solution {
         for (int i = startIndex; i < s.length(); i++) {
             // 如果是回文子串则记录
             if (isPalindrome(s, startIndex, i)) {
+                // 获取s中[startIndex,i]的子串
                 String str = s.substring(startIndex, i+1);
                 path.add(str);
             } else {
