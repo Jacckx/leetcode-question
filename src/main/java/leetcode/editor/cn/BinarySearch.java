@@ -81,7 +81,7 @@ class Solution {
             else if (target < nums[mid]) {
                 right = mid;
             }
-            // target落在右区间, 缩小左区间为 [mid+1, right)
+            // target落在右区间, 缩小左区间为[mid+1, right)
             else if (nums[mid] < target) {
                 left = mid + 1;
             }
