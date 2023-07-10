@@ -6,7 +6,7 @@
 
 1. LeetCode 用户名和密码
 
-2. 选中 Custom Template、Show Tool Icon、Show Topic、Plugin Update、showEditorSign，其他关闭
+2. 选中 Custom Template、Show Tool Icon、Show Topic、Plugin Update、showEditorSign，其他保持关闭状态
 
 3. 修改文件名模板（java类名会以题目名字来创建）
 
