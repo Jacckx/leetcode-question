@@ -1,6 +1,6 @@
 # leetcode-question
 
-算法题集合，配合LeetCode Editor IDEA 插件使用体验感最佳。
+算法题集合，配合LeetCode Editor IDEA 插件使用体验感最佳（到Settings->Plugins里搜索此插件）
 
 使用前需配置好插件，例如：
 
