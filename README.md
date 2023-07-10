@@ -8,15 +8,13 @@
 
 2. 选中 Custom Template、Show Tool Icon、Show Topic、Plugin Update、showEditorSign，其他关闭
 
-3. 文件名模板
+3. 修改文件名模板（java类名会以题目名字来创建）
 
    ```java
    $!velocityTool.camelCaseName(${question.titleSlug})
    ```
 
-   
-
-4. 代码模板
+4. 修改代码模板
 
    ```java
    ${question.content}
